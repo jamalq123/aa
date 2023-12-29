@@ -14,28 +14,28 @@ def extract_article_details(article_url, target_language):
     article = Article(article_url)
     article.download()
     article.parse()
-    article.nlp()
 
-    translator = Translator()
-    
-    st.header("Article Details")
-    
-    # Display complete text
-    st.subheader("Complete Text")
-    st.write(article.text)
+    if article.text:
+        article.nlp()
+        translator = Translator()
 
-    # Display keywords
-    st.subheader("Keywords")
-    st.write(", ".join(article.keywords))
+        st.header("Article Details")
 
-    # Display article summary
-    st.header("Article Summary")
-    st.subheader(article.title)
-    st.write(article.summary)
+        # Display complete text
+        st.subheader("Complete Text")
+        st.write(article.text)
 
-    # Translate content if a target language is selected
-    if target_language != "Original" and target_language is not None:
-        if article.text:  # Check if the article text is not empty or None
+        # Display keywords
+        st.subheader("Keywords")
+        st.write(", ".join(article.keywords))
+
+        # Display article summary
+        st.header("Article Summary")
+        st.subheader(article.title)
+        st.write(article.summary)
+
+        # Translate content if a target language is selected
+        if target_language != "Original" and target_language is not None:
             translated_title = translator.translate(article.title, dest=target_language).text
             translated_text = translator.translate(article.text, dest=target_language).text
             translated_summary = translator.translate(article.summary, dest=target_language).text
@@ -43,16 +43,16 @@ def extract_article_details(article_url, target_language):
             st.header(f"Translated Content ({target_language})")
             st.subheader("Translated Title")
             st.write(translated_title)
-            
+
             st.subheader("Translated Text")
             st.write(translated_text)
-            
+
             st.subheader("Translated Summary")
             st.write(translated_summary)
         else:
-            st.warning("No text available for translation.")
+            st.info("Select a target language to translate.")
     else:
-        st.info("Select a target language to translate.")
+        st.warning("No article content available. Please check the link.")
 
 # Streamlit app
 def main():
