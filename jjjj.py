@@ -15,7 +15,7 @@ def extract_article_details(article_url, target_language):
     article.download()
     article.parse()
     article.nlp()
-    
+
     translator = Translator()
     
     st.header("Article Details")
@@ -60,11 +60,15 @@ def main():
 
     # Input for article link and language selection
     article_link = st.text_input("Enter the article link:")
-    target_language = st.selectbox("Select a target language:", ["Original", "English", "German", "French", "Spanish", "Italian", "Portuguese", "Dutch", "Russian", "Japanese", "Korean", "Chinese (Simplified)", "Chinese (Traditional)"])
+    target_language = st.selectbox("Select Target Language", ["Original", "Spanish", "French", "German", "Italian", "Urdu"])
 
-    # Extract and display article details
-    if article_link:
-        extract_article_details(article_link, target_language)
+    if st.button("Translate"):
+        if article_link:
+            try:
+                extract_article_details(article_link, target_language)
+            except Exception as e:
+                st.error(f"Error: Unable to analyze the article. Please check the link. Exception: {e}")
+                st.exception(e)
 
 if __name__ == "__main__":
     main()
