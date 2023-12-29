@@ -1,7 +1,6 @@
 import streamlit as st
 from newspaper import Article
 from googletrans import Translator
-import nltk
 
 # Download 'punkt' tokenizer if not already downloaded
 nltk.download('punkt', quiet=True)
@@ -59,15 +58,11 @@ def main():
 
     # Input for article link and language selection
     article_link = st.text_input("Enter the article link:")
-    target_language = st.selectbox("Select Target Language", ["Original", "Spanish", "French", "German", "Italian", "Urdu"])
+    target_language = st.selectbox("Select a target language:", ["Original", "English", "French", "German", "Spanish", "Italian", "Portuguese", "Dutch", "Russian", "Japanese", "Korean", "Chinese (Simplified)", "Chinese (Traditional)"])
 
-    if st.button("Translate"):
-        if article_link:
-            try:
-                extract_article_details(article_link, target_language)
-            except Exception as e:
-                st.error(f"Error: Unable to analyze the article. Please check the link. Exception: {e}")
-                st.exception(e)
-    	
+    # Extract and display article details
+    if article_link:
+        extract_article_details(article_link, target_language)
+
 if __name__ == "__main__":
     main()
